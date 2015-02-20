@@ -1,3 +1,18 @@
+/*********************************************************************
+ *   Filename:    pagination.js
+ *   Version:     0.0.1
+ *
+ *   Description: pagination implements in jQuery
+ *
+ *   Created at:  Fri Feb 20 11:56:18 2015
+ *
+ *   Gallon Choi is a student majoring in Software Engineering,
+ *   from the School of Computer,
+ *   Guangdong University of Technology, GZ 510006, P. R. China
+ *
+ *   Status:      Experimental, do not distribute.
+ *
+ ********************************************************************/
 "use strict";
 
 var pagination = {
