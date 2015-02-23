@@ -9,6 +9,9 @@
           margin-left: 2px;
           margin-right: 2px;
       }
+      .pagination .active {
+          background: green;
+      }
     </style>
   </head>
   <body>
@@ -68,7 +71,7 @@
     <script src="../jquery.min.js"></script>
     <script src="../pagination.js"></script>
     <script>
-      pagination.init('.parent', '.item', '.pagination', 1, 4);
+      pagination.init('.parent', '.item', '.pagination', false, 4);
     </script>
   </body>
 </html>

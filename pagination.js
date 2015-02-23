@@ -27,7 +27,16 @@ var pagination = {
     nextLabel: 'Next',
 
     init: function(_itemParent, _item, _pageLayer, _currentPage, _itemsOnEachPage) {
-        _currentPage = typeof _currentPage !== 'undefined' ? _currentPage : 1;
+        if(_currentPage === false) {
+            var param = window.location.hash;
+            var regexp = new RegExp(/(page)(\d+)/);
+            if(regexp.test(param)) {
+                _currentPage = regexp.exec(param)[2];
+                console.log(_currentPage);
+            } else {
+                _currentPage = 1;
+            }
+        }
         _itemsOnEachPage = typeof _itemsOnEachPage !== 'undefined' ? _itemsOnEachPage : 0;
         this.itemParent = $(_itemParent);
         this.items = this.itemParent.find(_item);
@@ -38,12 +47,13 @@ var pagination = {
         this.itemSum = this.items.length;
         this.pages = this.itemSum/this.itemsOnEachPage;
         this.pages = this.pages > parseInt(this.pages) ? parseInt(this.pages) + 1 : this.pages;
-        if(this.pages <= 1 || this.currentPage > this.pages) {
+        if(this.pages <= 1) {
             return;
-        } else {
-            this.showItem();
-            this.renderButtons();
+        } else if(this.currentPage > this.pages) {
+            this.currentPage = this.pages;
         }
+        this.showItem();
+        this.renderButtons();
         var that = this;
         $('.pagination').on('click', '.page', function() {
             var page = $(this).data('page');
@@ -66,6 +76,14 @@ var pagination = {
         console.log(page);
         this.showItem();
         this.renderButtons();
+        var param = window.location.hash;
+        var regexp = new RegExp(/(page)(\d+)/);
+        if(regexp.test(param)) {
+            var newParam = param.replace(regexp, 'page'+page);
+            window.location.hash = newParam;
+        } else {
+            window.location.hash += '&page' + page;
+        }
     },
 
     renderButtons: function() {
@@ -91,7 +109,7 @@ var pagination = {
                     }
                 } else {
                     for(i = this.currentPage-1; i < this.currentPage+2 && i < this.pages; i++) {
-                        buttons.push(this.renderButton(i, i, false, false));
+                        buttons.push(this.renderButton(i, i, false, i == this.currentPage));
                     }
                     buttons.push(this.renderButton('..', null, false, false));
                     buttons.push(this.renderButton(this.pages-1, this.pages-1, false, false));
