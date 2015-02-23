@@ -1,6 +1,6 @@
 /*********************************************************************
  *   Filename:    pagination.js
- *   Version:     0.0.1
+ *   Version:     0.0.2
  *
  *   Description: pagination implements in jQuery
  *
@@ -38,47 +38,80 @@ var pagination = {
         if(this.pages <= 1 || this.currentPage > this.pages) {
             return;
         } else {
+            this.showItem();
             this.renderButtons();
         }
+        var that = this;
+        $('.pagination').on('click', '.page', function() {
+            var page = $(this).data('page');
+            that.nextPage(page);
+        });
+    },
+
+    showItem: function() {
+        this.items.hide();
+        var start = (this.currentPage-1)*this.itemsOnEachPage;
+        var end = this.currentPage*this.itemsOnEachPage;
+        for(var i = start; i < end; i++) {
+            this.items[i].style.display = 'block';
+        }
+    },
+
+    nextPage: function(page) {
+        this.currentPage  = page;
+        console.log(page);
+        this.showItem();
+        this.renderButtons();
     },
 
     renderButtons: function() {
         var buttons = [];
         if(this.currentPage > 1) {
-            buttons.push(this.renderButton('Prev', this.currentPage-1));
+            buttons.push(this.renderButton('Prev', this.currentPage-1, false, false));
         }
         if(this.pages > 10) {
             if(this.currentPage < 5) {
-                for(var i = 1; i < 5 && i <= this.pages; i++) {
-                    buttons.push(this.renderButton(i, i == this.currentPage));
+                for(var i = 1; i <= 5; i++) {
+                    buttons.push(this.renderButton(i, i, false, i == this.currentPage));
                 }
+                buttons.push(this.renderButton('..', null, false, false));
+                buttons.push(this.renderButton(this.pages-1, this.pages-1, false, false));
+                buttons.push(this.renderButton(this.pages, this.pages, false, false));
             } else {
-                buttons.push(this.renderButton(1));
-                buttons.push(this.renderButton(2));
-                buttons.push(this.renderButton('..'));
-                if(this.pages - this.currentPage <= 3) {
-                    for(i = this.currentPage-2; i < 0 && i <= this.currentPage; i++) {
-                        buttons.push(this.renderButton(i, i == this.currentPage));
-
+                buttons.push(this.renderButton(1, 1, false, false));
+                buttons.push(this.renderButton(2, 2, false, false));
+                buttons.push(this.renderButton('..', null, false, false));
+                if(this.pages - this.currentPage <= 4) {
+                    for(i = this.currentPage-2; i <= this.pages; i++) {
+                        buttons.push(this.renderButton(i, i, false, i == this.currentPage));
                     }
                 } else {
-                    buttons.push(this.renderButton());
+                    for(i = this.currentPage-1; i < this.currentPage+2 && i < this.pages; i++) {
+                        buttons.push(this.renderButton(i, i, false, false));
+                    }
+                    buttons.push(this.renderButton('..', null, false, false));
+                    buttons.push(this.renderButton(this.pages-1, this.pages-1, false, false));
+                    buttons.push(this.renderButton(this.pages, this.pages, false, false));
                 }
             }
         } else {
             for(i = 1; i <= this.pages; i++) {
-                buttons.push(this.renderButton(i, i == this.pages));
+                buttons.push(this.renderButton(i, i, false, i == this.currentPage));
             }
         }
         if(this.currentPage < this.pages) {
-            buttons.push(this.renderButton('Next', this.currentPage+1));
+            buttons.push(this.renderButton('Next', this.currentPage+1, false, false));
         }
         this.createPagination(buttons);
     },
 
-    renderButton: function(label, page, active) {
-        active = typeof active !== 'undefined' ? active : false;
-        var button = $('<a>', {'class': 'page'}, {'href': 'javascript:void(0)'}, {'data-page': page}).text(label);
+    renderButton: function(label, page, disable, active) {
+        var button = $('<a>', {'href': 'javascript:void(0)', 'data-page': page}).text(label);
+        if(disable === true) {
+            button.addClass('disable');
+        } else if(page !== null) {
+            button.addClass('page');
+        }
         if(active === true) {
             button.addClass('active');
         }
@@ -86,6 +119,7 @@ var pagination = {
     },
 
     createPagination: function(buttons) {
+        this.pageLayer.empty();
         for(var i = 0; i < buttons.length; i++) {
             this.pageLayer.append(buttons[i]);
         }
