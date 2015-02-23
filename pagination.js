@@ -1,6 +1,6 @@
 /*********************************************************************
  *   Filename:    pagination.js
- *   Version:     0.0.2
+ *   Version:     0.0.9
  *
  *   Description: pagination implements in jQuery
  *
@@ -90,6 +90,8 @@ var pagination = {
         var buttons = [];
         if(this.currentPage > 1) {
             buttons.push(this.renderButton(this.prevLabel, this.currentPage-1, false, false));
+        } else {
+            buttons.push(this.renderButton(this.prevLabel, null, true, false));
         }
         if(this.pages > 10) {
             if(this.currentPage < 5) {
@@ -123,6 +125,8 @@ var pagination = {
         }
         if(this.currentPage < this.pages) {
             buttons.push(this.renderButton(this.nextLabel, this.currentPage+1, false, false));
+        } else {
+            buttons.push(this.renderButton(this.nextLabel, null, true, false));
         }
         this.createPagination(buttons);
     },
