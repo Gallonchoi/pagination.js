@@ -16,7 +16,7 @@
 "use strict";
 
 var pagination = {
-    parent: null,
+    itemParent: null,
     items: null,
     itemSum: null,
     currentPage: null,
@@ -26,11 +26,11 @@ var pagination = {
     prevLabel: 'Prev',
     nextLabel: 'Next',
 
-    init: function(_parent, _item, _pageLayer, _currentPage, _itemsOnEachPage) {
+    init: function(_itemParent, _item, _pageLayer, _currentPage, _itemsOnEachPage) {
         _currentPage = typeof _currentPage !== 'undefined' ? _currentPage : 1;
         _itemsOnEachPage = typeof _itemsOnEachPage !== 'undefined' ? _itemsOnEachPage : 0;
-        this.parent = $(_parent);
-        this.items = this.parent.find(_item);
+        this.itemParent = $(_itemParent);
+        this.items = this.itemParent.find(_item);
         this.pageLayer = $(_pageLayer);
         this.setCurrentPage(_currentPage);
         this.setItemsOnEachPage(_itemsOnEachPage);
@@ -55,6 +55,7 @@ var pagination = {
         this.items.hide();
         var start = (this.currentPage-1)*this.itemsOnEachPage;
         var end = this.currentPage*this.itemsOnEachPage;
+        end = end > this.items.length ? this.items.length : end;
         for(var i = start; i < end; i++) {
             this.items[i].style.display = 'block';
         }
