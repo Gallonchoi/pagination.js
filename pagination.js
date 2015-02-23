@@ -23,6 +23,8 @@ var pagination = {
     itemsOnEachPage: null,
     pages: null,
     pageLayer: null,
+    prevLabel: 'Prev',
+    nextLabel: 'Next',
 
     init: function(_parent, _item, _pageLayer, _currentPage, _itemsOnEachPage) {
         _currentPage = typeof _currentPage !== 'undefined' ? _currentPage : 1;
@@ -67,7 +69,7 @@ var pagination = {
     renderButtons: function() {
         var buttons = [];
         if(this.currentPage > 1) {
-            buttons.push(this.renderButton('Prev', this.currentPage-1, false, false));
+            buttons.push(this.renderButton(this.prevLabel, this.currentPage-1, false, false));
         }
         if(this.pages > 10) {
             if(this.currentPage < 5) {
@@ -100,7 +102,7 @@ var pagination = {
             }
         }
         if(this.currentPage < this.pages) {
-            buttons.push(this.renderButton('Next', this.currentPage+1, false, false));
+            buttons.push(this.renderButton(this.nextLabel, this.currentPage+1, false, false));
         }
         this.createPagination(buttons);
     },
