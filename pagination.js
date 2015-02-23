@@ -31,8 +31,7 @@ var pagination = {
             var param = window.location.hash;
             var regexp = new RegExp(/(page)(\d+)/);
             if(regexp.test(param)) {
-                _currentPage = regexp.exec(param)[2];
-                console.log(_currentPage);
+                _currentPage = parseInt(regexp.exec(param)[2]);
             } else {
                 _currentPage = 1;
             }
@@ -54,6 +53,7 @@ var pagination = {
         }
         this.showItem();
         this.renderButtons();
+
         var that = this;
         $('.pagination').on('click', '.page', function() {
             var page = $(this).data('page');
@@ -72,8 +72,7 @@ var pagination = {
     },
 
     nextPage: function(page) {
-        this.currentPage  = page;
-        console.log(page);
+        this.currentPage = page;
         this.showItem();
         this.renderButtons();
         var param = window.location.hash;
