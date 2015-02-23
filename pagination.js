@@ -37,6 +37,7 @@ var pagination = {
 
         this.itemSum = this.items.length;
         this.pages = this.itemSum/this.itemsOnEachPage;
+        this.pages = this.pages > parseInt(this.pages) ? parseInt(this.pages) + 1 : this.pages;
         if(this.pages <= 1 || this.currentPage > this.pages) {
             return;
         } else {
