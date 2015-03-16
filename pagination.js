@@ -140,7 +140,8 @@ var pagination = {
         if(active === true) {
             button.addClass('active');
         }
-        return button;
+        // TODO html tag customization
+        return $('<li>').html(button);
     },
 
     createPagination: function(buttons) {
