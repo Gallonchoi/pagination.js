@@ -56,7 +56,7 @@ var pagination = {
 
         var that = this;
         $('.pagination').on('click', '.page', function() {
-            var page = $(this).data('page');
+            var page = $(this).find('a').data('page');
             that.nextPage(page);
         });
     },
@@ -131,17 +131,17 @@ var pagination = {
     },
 
     renderButton: function(label, page, disable, active) {
-        var button = $('<a>', {'href': 'javascript:void(0)', 'data-page': page}).text(label);
+        // TODO html tag customization
+        var button = $('<li>').html($('<a>', {'href': 'javascript:void(0)', 'data-page': page}).text(label));
         if(disable === true) {
-            button.addClass('disable');
+            button.addClass('disabled');
         } else if(page !== null) {
             button.addClass('page');
         }
         if(active === true) {
             button.addClass('active');
         }
-        // TODO html tag customization
-        return $('<li>').html(button);
+        return button;
     },
 
     createPagination: function(buttons) {
